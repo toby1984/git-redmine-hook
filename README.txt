@@ -8,12 +8,12 @@ GIT / Redmine integration (tested against Redmine 1.2.0).
 Yeah, I know that I could've achieved the same thing
 with a Perl (or even Bash) script ... but I 
 desperately wanted to write some Scala code 
-(considering that I program in Java for a living),
+(considering that do Java programming for a living),
 so Scala it is... 
 
 *RANT OFF*
 
-It is intended to be run as a GIT commit hook
+This tool is intended to be run as a GIT commit hook
 and provides the following two modes of operation: 
 
 1. (when run as commit-msg hook)
