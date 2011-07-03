@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Archiver-Version: handmade 
+Created-By: Apache Maven
+Built-By: Tobias Gierke 
+Build-Jdk: 1.6
+Main-Class: de.codesourcery.scala.redminehook.Main
+Class-Path: 
