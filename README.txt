@@ -67,8 +67,7 @@ COMMITS       : Gets replaced with a list of GIT SHA1 hashes along with the auth
 GIT CONFIGURATION
 =================
 
-To run this program every time a git push is received, do
-the following:
+To run this program as a GIT hook, do the following:
 
 1. Make sure you have the Java JRE (runtime) installed (run 'java -version' to check)
 
