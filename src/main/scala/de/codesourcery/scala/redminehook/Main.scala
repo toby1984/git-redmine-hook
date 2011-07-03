@@ -98,8 +98,8 @@ object Main
       }
     }
 
-    // read lines from commit message and check
-    // whether the first line contains our pattern
+    // read lines from commit message,
+    // bail out if file is empty 
     val source = new BufferedSource( new FileInputStream( commitMessage ) )
     val lines = source.getLines.toSeq
     
@@ -107,11 +107,12 @@ object Main
       return 
     }
 
-    // replace TICKET_ID placeholder with regex for matching an integer number
+    // replace TICKET_ID placeholder with regex that matches an integer number
     val substitutedExpression = placeholderExpression.expandToRegExPattern { 
       case "TICKET_ID" => "([0-9]++)"
     }
 
+    // check whether the first line matches our pattern (and thus requires expanding)
     if ( substitutedExpression.isContainedIn( lines.head ) ) 
     {
       LOG.debug( "Commit message needs expanding." )
