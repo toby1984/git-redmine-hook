@@ -18,7 +18,7 @@ and provides the following two modes of operation:
 
 1. (when run as commit-msg hook)
 
-   Checks whether the first line of a commit message matches a given
+   Checks whether the FIRST line of a commit message matches a given
    pattern and enriches the commit message with properties from 
    the referenced Redmine issue according to a given pattern.
 
@@ -27,9 +27,9 @@ and provides the following two modes of operation:
 
 2. (when run as a post-receive hook)
 
-   Tries to extract references to Redmine issues from 
-   commit messages and updates each referenced issue 
-   with a note which GIT commits referred it. 
+   Tries to extract Redmine issue IDs from 
+   commit messages and updates each issue 
+   with a note saying which GIT commits refer to it.
    
 BUILDING
 ========
