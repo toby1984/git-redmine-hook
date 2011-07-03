@@ -8,7 +8,7 @@ GIT / Redmine integration (tested against Redmine 1.2.0).
 Yeah, I know that I could've achieved the same thing
 with a Perl (or even Bash) script ... but I 
 desperately wanted to write some Scala code 
-(considering that do Java programming for a living),
+(considering that I do Java programming for a living),
 so Scala it is... 
 
 *RANT OFF*
