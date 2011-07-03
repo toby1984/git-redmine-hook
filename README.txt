@@ -10,7 +10,7 @@ and provides the following two modes of operation:
 
    Checks whether the first line of a commit message matches a given
    pattern and enriches the commit message with properties from 
-   this issue according to a given pattern.
+   the referenced Redmine issue according to a given pattern.
 
    Currently only the issue's subject line is available
    for substitution.
