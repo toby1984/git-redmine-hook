@@ -18,7 +18,7 @@ limitations under the License.
   <groupId>de.codesourcery.scala</groupId>
   <packaging>jar</packaging>
   <artifactId>git-redmine-hook</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>git-redmine-hook</name>
   <description>A GIT pre-commit/post-receive hook that interacts with a Redmine issue tracking system</description>
 
