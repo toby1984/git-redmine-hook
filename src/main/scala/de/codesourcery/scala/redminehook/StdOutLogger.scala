@@ -19,10 +19,12 @@ package de.codesourcery.scala.redminehook
  *
  * @author tobias.gierke@code-sourcery.de
  */
-class StdOutLogger( var debugMode : Boolean = true ) {
+class StdOutLogger( var debugMode : Boolean = false ) {
 
   def debug( msg : => String ) {
-    println( "DEBUG: "+msg )
+    if ( debugMode ) {
+      println( "DEBUG: "+msg )
+    }
   }
 
   def info( msg : => String ) {

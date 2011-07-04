@@ -92,10 +92,10 @@ class GitClient( implicit LOG : StdOutLogger ) {
           walk.markStart( latestCommit )
 
           var current = walk.next;
-          do {
+          while ( current != null && current.getId != parent {
             result.append( current )
-            current = if ( current.getId != parent ) walk.next else null
-          } while ( current != null )
+            current = walk.next
+          }
           Some( result )
         }
       }
