@@ -36,6 +36,7 @@ import org.apache.http.protocol.HttpContext
 import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.util.EntityUtils
+import scala.collection.mutable.ListBuffer
 
 /** Redmine API client.
  *
@@ -85,7 +86,8 @@ class RedmineClient( configuration : Configuration )( implicit LOG : StdOutLogge
         case Some( xml ) => {
           val subject = ( xml \ "subject" ).text
           val id = ( xml \ "id" ).text.toInt
-          Some( new Issue( id, subject ) )
+          val comments = ( xml \\ "notes" ).collect { case entry : scala.xml.Node => entry.text }
+          Some( new Issue( id, subject, comments ) )
         }
         case None => {
           LOG.warn( "Commit seems to refer to unknown Redmine issue #"+ticketId )
@@ -108,7 +110,7 @@ class RedmineClient( configuration : Configuration )( implicit LOG : StdOutLogge
   }
 
   private def createIssueFetchURL( ticketId : Int ) : URLHelper = {
-    baseURL + ( "/issues/"+ticketId.toString+".xml" )
+    baseURL + ( "/issues/"+ticketId.toString+".xml?include=journals" )
   }
 
   private def sendGET( url : URL ) : Option[Elem] =

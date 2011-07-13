@@ -220,14 +220,22 @@ object Main
         commitsByTicketId
       }
     }
+    
+    LOG.info("Processing references to "+commitsByTicketId.size+" Redmine issue(s).")
 
+    var updatedIssueCount = 0
     for ( ( ticketId, commitsForThisTicket ) <- commitsByTicketId ) {
       LOG.debug( "Trying to fetch issue #"+ticketId )
       redmineClient.getIssue( ticketId ) match {
-        case Some( issue ) => updateIssue( issue, commitsForThisTicket )
+        case Some( issue ) => {
+          if ( updateIssue( issue, commitsForThisTicket ) ) {
+            updatedIssueCount = updatedIssueCount + 1
+          }
+        }
         case _ =>
       }
     }
+    LOG.info("Updated "+updatedIssueCount+" Redmine issue(s).")
   }
 
   private def extractTicketIdsFrom( commit : RevCommit ) : Set[Int] =
@@ -243,18 +251,26 @@ object Main
       result.toSet
     }
 
-  private def updateIssue( issue : Issue, commits : Iterable[RevCommit] ) 
+  private def updateIssue( issue : Issue, commits : Iterable[RevCommit] ) : Boolean =
   {
     require( !commits.isEmpty )
 
-    LOG.info( "GIT commit(s) referring to "+issue+" : "+commits.map( sha1 ).mkString( "," ) )
+    LOG.debug( "GIT commit(s) referring to "+issue+" : "+commits.map( sha1 ).mkString( "," ) )
 
-    val message = commits.foldLeft( "" ) { ( previousLine, commit ) => {
+    // filter commits
+    val filteredCommits = commits.filterNot( commit => issue.containsReferenceTo( commit ) )
+    if ( filteredCommits.isEmpty ) {
+      LOG.debug("All GIT commits already mentioned in "+issue)
+      return false;
+    }
+    
+    val message = filteredCommits.foldLeft( "" ) { ( previousLine, commit ) => {
         previousLine+"\n"+sha1( commit )+" by "+commit.getAuthorIdent.getEmailAddress
       }
     }
     
     val pattern = appConfig.commentPattern.expand( { case "COMMITS" => message } ) 
     redmineClient.addComment( issue, pattern.toString )
+    return true
   }
 }

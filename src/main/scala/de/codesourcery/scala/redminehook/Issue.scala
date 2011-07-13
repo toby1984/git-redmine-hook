@@ -14,13 +14,34 @@
  * limitations under the License.
  */
 package de.codesourcery.scala.redminehook
+import org.eclipse.jgit.lib.AnyObjectId
+import java.util.regex.Pattern
+import scala.collection.mutable.HashSet
+import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.revwalk.RevCommit
 
 /** An issue in a trouble ticketing system.
  *
  * @author tobias.gierke@code-sourcery.de
  */
-class Issue( val ticketID : Int, val subject : String ) {
+class Issue( val ticketID : Int, val subject : String , comments: Seq[String] ) {
 
+  private val mentionedGitCommits : Set[ObjectId] = 
+  {
+    val commitHashPattern = Pattern.compile("([0-9a-z]{40})" , Pattern.CASE_INSENSITIVE);
+    val hashes = new HashSet[ObjectId]()
+    comments.foreach( comment => 
+      {
+    	val matcher = commitHashPattern.matcher( comment )
+    	while ( matcher.find ) {
+    	  hashes.add( ObjectId.fromString( matcher.group(1) ) )
+    	}
+    })
+    hashes.toSet
+  }
+  
+  def containsReferenceTo(commit:RevCommit) : Boolean = mentionedGitCommits.contains( commit.getId )
+  
   override def equals( obj : Any ) : Boolean = obj match {
     case x : Issue => x.ticketID == ticketID
     case _ => false
