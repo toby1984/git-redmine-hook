@@ -199,7 +199,6 @@ object Main
     for ( line <- input.getLines ) {
       val GitReceiveLine( parentHash, childHash, ref ) = line
       // ignore special commit hash that gets passed when deleting a remote branch 
-      LOG.info( childHash+" -> "+parentHash )
       if ( parentHash != "0000000000000000000000000000000000000000" &&
            childHash != "0000000000000000000000000000000000000000" ) 
       {
