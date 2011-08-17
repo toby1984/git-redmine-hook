@@ -270,7 +270,7 @@ object Main
     }
     
     val message = filteredCommits.foldLeft( "" ) { ( previousLine, commit ) => {
-        previousLine+"\n"+sha1( commit )+" by "+commit.getAuthorIdent.getEmailAddress
+        previousLine+"\ncommit:"+sha1( commit )+" by "+commit.getAuthorIdent.getEmailAddress
       }
     }
     
