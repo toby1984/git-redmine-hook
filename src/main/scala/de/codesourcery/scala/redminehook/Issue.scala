@@ -28,7 +28,7 @@ class Issue( val ticketID : Int, val subject : String , comments: Seq[String] ) 
 
   private val mentionedGitCommits : Set[ObjectId] = 
   {
-    val commitHashPattern = Pattern.compile("([0-9a-z]{40})" , Pattern.CASE_INSENSITIVE);
+    val commitHashPattern = Pattern.compile("([0-9a-f]{40})" , Pattern.CASE_INSENSITIVE);
     val hashes = new HashSet[ObjectId]()
     comments.foreach( comment => 
       {
