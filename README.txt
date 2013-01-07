@@ -1,7 +1,7 @@
 (C) 2011-07-03 , tobias.gierke@code-sourcery.de
 
 This is a little Scala program I wrote for 
-GIT / Redmine integration (tested against Redmine 1.2.0).
+GIT / Redmine integration (tested against Redmine 2.2.0).
 
 *RANT ON*
 
@@ -40,7 +40,7 @@ Apache Maven 2.2.1
 Java version: 1.6.0_26 (x86,32-bit)
 Scala library : 2.9.0-1
 
-Running 'mvn package' will create the executable JAR /target/git-redmine-hook-1.0.0-exe.jar
+Running 'mvn package' will create the executable JAR /target/git-redmine-hook-<VERSION>-exe.jar
 
 INSTALLATION
 ============
