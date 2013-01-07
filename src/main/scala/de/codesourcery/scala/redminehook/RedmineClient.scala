@@ -37,6 +37,7 @@ import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.util.EntityUtils
 import scala.collection.mutable.ListBuffer
+import org.apache.commons.lang.StringEscapeUtils
 
 /** Redmine API client.
  *
@@ -96,17 +97,30 @@ class RedmineClient( configuration : Configuration )( implicit LOG : StdOutLogge
       }
     }
 
-  private def createIssueUpdateURL( issue : Issue, comment : String ) : URLHelper =
-    {
-      val encodedComment = new URLCodec().encode( comment )
-      baseURL + ( "/issues/"+issue.ticketID.toString+".xml?notes="+encodedComment )
-    }
+  private def createIssueUpdateURL( issue : Issue) : URLHelper = baseURL + ("/issues/"+issue.ticketID.toString+".xml")
 
   /**
    * Adds a comment to an existing Redmine issue.
    */
-  def addComment( issue : Issue, comment : String ) {
-    sendPUT( createIssueUpdateURL( issue, comment ) )
+  def addComment( issue : Issue, comment : String ) 
+  {
+    val url = createIssueUpdateURL( issue )
+    
+    LOG.debug( "Sending PUT to "+url )
+    val encodedComment = StringEscapeUtils.escapeXml( comment )
+    
+    val fragment = <issue><id>{issue.ticketID.toString}</id><notes>{encodedComment}</notes></issue>
+    val xml = "<?xml version=\"1.0\" ?>"+fragment.toString
+    
+    val putRequest = new HttpPut( url.toString )
+    putRequest.setEntity(  new StringEntity( xml , "text/xml", "UTF-8" )  )
+    val response = executeRequest( putRequest )
+    response.getStatusLine.getStatusCode match {
+      case status : Int if status == 200 => LOG.debug( "PUT returned HTTP status "+status )
+      case status : Int => LOG.error( "PUT returned HTTP status "+status )
+    }
+    // required to release TCP connection
+    EntityUtils.consume( response.getEntity )    
   }
 
   private def createIssueFetchURL( ticketId : Int ) : URLHelper = {
@@ -129,17 +143,6 @@ class RedmineClient( configuration : Configuration )( implicit LOG : StdOutLogge
         }
       }
     }
-
-  private def sendPUT( url : URL ) {
-    LOG.debug( "Sending PUT to "+url )
-    val response = executeRequest( new HttpPut( url.toString ) )
-    response.getStatusLine.getStatusCode match {
-      case status : Int if status == 200 => LOG.debug( "PUT returned HTTP status "+status )
-      case status : Int => LOG.error( "PUT returned HTTP status "+status )
-    }
-    // required to release TCP connection
-    EntityUtils.consume( response.getEntity )
-  }
 
   private def executeRequest( request : HttpUriRequest ) : HttpResponse = {
     httpClient.execute( configuration.httpHost, request, httpContext )

@@ -29,6 +29,7 @@ limitations under the License.
         <include>org.apache.httpcomponents:httpclient</include>
         <include>org.apache.httpcomponents:httpcore</include>
         <include>commons-logging:commons-logging</include>
+        <include>commons-lang:commons-lang</include>
         <include>commons-codec:commons-codec</include>
         <include>com.madgag:org.eclipse.jgit</include>
         <include>org.scala-lang:scala-library</include>
