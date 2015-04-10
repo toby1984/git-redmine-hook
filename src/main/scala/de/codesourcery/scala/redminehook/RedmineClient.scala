@@ -113,6 +113,7 @@ class RedmineClient( configuration : Configuration )( implicit LOG : StdOutLogge
     val xml = "<?xml version=\"1.0\" ?>"+fragment.toString
     
     val putRequest = new HttpPut( url.toString )
+    putRequest.setHeader("Content-Type", "application/xml" )
     putRequest.setEntity(  new StringEntity( xml , "text/xml", "UTF-8" )  )
     val response = executeRequest( putRequest )
     response.getStatusLine.getStatusCode match {
@@ -145,7 +146,6 @@ class RedmineClient( configuration : Configuration )( implicit LOG : StdOutLogge
     }
 
   private def executeRequest( request : HttpUriRequest ) : HttpResponse = {
-    request.setHeader("Content-Type", "application/xml" );
     httpClient.execute( configuration.httpHost, request, httpContext )
   }
 
