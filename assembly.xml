@@ -33,6 +33,7 @@ limitations under the License.
         <include>commons-codec:commons-codec</include>
         <include>com.madgag:org.eclipse.jgit</include>
         <include>org.scala-lang:scala-library</include>
+        <include>org.scala-lang.modules:scala-xml_2.11</include>
       </includes>
     </dependencySet>
   </dependencySets>

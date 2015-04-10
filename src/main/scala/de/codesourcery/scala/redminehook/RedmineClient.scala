@@ -145,6 +145,7 @@ class RedmineClient( configuration : Configuration )( implicit LOG : StdOutLogge
     }
 
   private def executeRequest( request : HttpUriRequest ) : HttpResponse = {
+    request.setHeader("Content-Type", "application/xml" );
     httpClient.execute( configuration.httpHost, request, httpContext )
   }
 

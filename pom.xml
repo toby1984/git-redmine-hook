@@ -75,7 +75,7 @@ limitations under the License.
   </pluginRepositories>
 
   <properties>
-    <scala.version>2.9.0-1</scala.version>
+    <scala.version>2.11.5</scala.version>
     <!-- <scala.plugin.version>2.13.1</scala.plugin.version> -->
     <scala.plugin.version>2.15.2</scala.plugin.version>
   </properties>
@@ -83,6 +83,12 @@ limitations under the License.
   <!-- Distribution -->
 
   <dependencies>
+
+    <dependency>
+       <groupId>org.scala-lang.modules</groupId>
+       <artifactId>scala-xml_2.11</artifactId>
+       <version>1.0.3</version>
+    </dependency>
 
     <dependency>
        <groupId>org.scala-lang</groupId>
