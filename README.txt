@@ -1,7 +1,7 @@
 (C) 2011-07-03 , tobias.gierke@code-sourcery.de
 
 This is a little Scala program I wrote for 
-GIT / Redmine integration (tested against Redmine 2.2.0).
+GIT / Redmine integration (tested against Redmine 2.2.0 and Redmine 3.0.1).
 
 *RANT ON*
 
