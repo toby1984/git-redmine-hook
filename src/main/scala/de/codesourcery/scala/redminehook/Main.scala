@@ -202,12 +202,12 @@ object Main
       if ( parentHash != "0000000000000000000000000000000000000000" &&
            childHash != "0000000000000000000000000000000000000000" ) 
       {
-    	  handleCommit( childHash, parentHash )
+    	  handleCommit( childHash, parentHash , ref )
       }
     }
   }
 
-  private def handleCommit( childCommit : ObjectId, parentCommit : ObjectId ) {
+  private def handleCommit( childCommit : ObjectId, parentCommit : ObjectId , refSpec: String) {
 
     val commits = gitClient.getCommits( childCommit, parentCommit )
 
@@ -233,7 +233,7 @@ object Main
       LOG.debug( "Trying to fetch issue #"+ticketId )
       redmineClient.getIssue( ticketId ) match {
         case Some( issue ) => {
-          if ( updateIssue( issue, commitsForThisTicket ) ) {
+          if ( updateIssue( issue, commitsForThisTicket , refSpec) ) {
             updatedIssueCount = updatedIssueCount + 1
           }
         }
@@ -256,7 +256,7 @@ object Main
       result.toSet
     }
 
-  private def updateIssue( issue : Issue, commits : Iterable[RevCommit] ) : Boolean =
+  private def updateIssue( issue : Issue, commits : Iterable[RevCommit] , refSpec : String ) : Boolean =
   {
     require( !commits.isEmpty )
 
@@ -270,7 +270,7 @@ object Main
     }
     
     val message = filteredCommits.foldLeft( "" ) { ( previousLine, commit ) => {
-        previousLine+"\ncommit:"+sha1( commit )+" by "+commit.getAuthorIdent.getEmailAddress
+        previousLine+"\ncommit:"+sha1( commit )+" by "+commit.getAuthorIdent.getEmailAddress+" ("+refSpec+")"
       }
     }
     
